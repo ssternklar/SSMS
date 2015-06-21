@@ -2,4 +2,14 @@
     <string name="app_name">SSMS</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_create_profile">CreateProfileActivity</string>
+    <string name="create_profile_button_text">Create New SMS Profile</string>
+    <string name="transmit_key_button_text">Transmit Encryption Key</string>
+    <string name="recieve_key_button_text">Recieve Encryption Key</string>
+    <string name="send_message_button_text">Send Message</string>
+    <string name="name_box_default_text">Enter Profile Name Here</string>
+    <string name="generate_key_button_text">Generate Encryption Key For This Profile</string>
 </resources>
