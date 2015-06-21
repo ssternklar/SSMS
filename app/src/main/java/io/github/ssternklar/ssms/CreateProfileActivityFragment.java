@@ -37,8 +37,7 @@ public class CreateProfileActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_create_profile, container, false);
 
         //Get our nameBoxFragment
-        nameBoxFragment = NameBoxFragment.newestInstance;
-
+        nameBoxFragment = (NameBoxFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.name_box_fragment);
         //Get our button
         Button button = (Button)view.findViewById(R.id.generate_key_button);
 
