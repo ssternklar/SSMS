@@ -20,7 +20,12 @@
         </activity>
         <activity
             android:name=".CreateProfileActivity"
-            android:label="@string/title_activity_create_profile" >
+            android:label="@string/title_activity_create_profile"
+            android:parentActivityName="io.github.ssternklar.ssms.MainActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.ssternklar.ssms.MainActivity" />
         </activity>
     </application>
 
