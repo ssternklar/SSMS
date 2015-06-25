@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <provider
+        android:authorities="io.github.ssternklar.ssms"
+        android:name=".SSMSContentProvider"
+        />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -15,12 +15,12 @@ public class SSMSDbOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase)
     {
-        String SQL_CREATE_TABLE = "CREATE TABLE " + SSMSEntry.TABLE_NAME + "(" +
-                SSMSEntry.COLUMN_ID + " INTEGER PRIMARY KEY, " +
-                SSMSEntry.COLUMN_USER_NAME + " NVARCHAR(4000) UNIQUE NOT NULL, " +
+        String SQL_CREATE_TABLE = "CREATE TABLE " + SSMSContract.TABLE_NAME + "(" +
+                SSMSContract.COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                SSMSContract.COLUMN_USER_NAME + " NVARCHAR(4000) UNIQUE NOT NULL, " +
                 //This one can be null, after all we don't want a default phone number, right?
-                SSMSEntry.COLUMN_PHONE_NUMBER + " NVARCHAR(15) NOT NULL, " +
-                SSMSEntry.COLUMN_ENCRYPT_KEY + " NVARCHAR(800) NOT NULL " +
+                SSMSContract.COLUMN_PHONE_NUMBER + " NVARCHAR(15) NOT NULL, " +
+                SSMSContract.COLUMN_ENCRYPT_KEY + " NVARCHAR(800) NOT NULL " +
                 " );";
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE);
     }
@@ -31,7 +31,7 @@ public class SSMSDbOpenHelper extends SQLiteOpenHelper {
         //Proper handling of this is left as as exercise to the programmer.
         //Future people, if you are ever looking at this, I deeply apologize.
         //I do not have enough database knowledge to know how to gracefully handle this
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SSMSEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SSMSContract.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }
