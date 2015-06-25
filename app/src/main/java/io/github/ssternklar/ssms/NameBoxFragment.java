@@ -13,7 +13,7 @@ import android.widget.EditText;
 public class NameBoxFragment extends Fragment {
 
     public EditText box;
-    public static NameBoxFragment newestInstance;
+
     public NameBoxFragment() {
         // Required empty public constructor
     }
@@ -24,11 +24,14 @@ public class NameBoxFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_name_box, container, false);
 
-        newestInstance = this;
-
         box = (EditText)view.findViewById(R.id.name_box);
 
         return view;
+    }
+
+    public String getText()
+    {
+        return box.getText().toString();
     }
 
 }

@@ -134,5 +134,4 @@ public class CreateProfileActivityFragment extends Fragment {
             processRandomTaskFinish(result);
         }
     }
-
 }
