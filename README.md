@@ -39,4 +39,4 @@ You build this app the same way you build any other Android app:
 
 # I want to help!
 
-Tough luck, I'm building this so that I can learn things, and as such will not really be accepting people using. You're free to fork this repository and work on it yourself, as well as submit pull requests, though I probably won't accept any unless they are for an extremely minor change.
+Tough luck, I'm building this so that I can learn things, and as such will not really be accepting people helping out with large segments of the project. You're free to fork this repository and work on it yourself, as well as submit pull requests, though I probably won't accept any unless they are for an extremely minor change.
