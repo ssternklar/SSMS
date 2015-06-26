@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public final class SSMSDbHelper {
+
     public static String getPhoneNumberFromName(SQLiteDatabase db, String name)
     {
         Cursor c = db.rawQuery("SELECT " + SSMSContract.COLUMN_PHONE_NUMBER + " FROM " + SSMSContract.TABLE_NAME + " WHERE " + SSMSContract.COLUMN_USER_NAME + "=\"" + name+"\"", null);
@@ -42,5 +43,10 @@ public final class SSMSDbHelper {
     {
         setPhoneNumberAtName(db, name, number);
         setEncryptKeyAtName(db, name, key);
+    }
+
+    public static void deleteRecord(SQLiteDatabase db, String name)
+    {
+        db.execSQL("DELETE FROM " + SSMSContract.TABLE_NAME + " WHERE " + SSMSContract.COLUMN_USER_NAME + "=\"" + name + "\"");
     }
 }

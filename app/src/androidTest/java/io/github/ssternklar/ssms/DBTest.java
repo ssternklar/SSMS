@@ -28,5 +28,7 @@ public class DBTest extends AndroidTestCase {
         long index = SSMSDbHelper.insertNewPerson(db, "John Smith", "1234567890", "noooooooo");
         SSMSDbHelper.setPhoneNumberAtName(db, "John Smith", "0987654321");
         assertTrue("Error, phone number set fail!", SSMSDbHelper.getPhoneNumberFromName(db, "John Smith").equals("0987654321"));
+        SSMSDbHelper.deleteRecord(db, "John Smith");
+        assertTrue("Error, delete did not work right", SSMSDbHelper.getPhoneNumberFromName(db, "John Smith").equals(""));
     }
 }

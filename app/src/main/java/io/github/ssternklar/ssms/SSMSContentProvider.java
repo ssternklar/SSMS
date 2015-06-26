@@ -3,7 +3,9 @@ package io.github.ssternklar.ssms;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
@@ -71,16 +73,39 @@ public class SSMSContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs)
     {
-        return 0;
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        int match = matcher.match(uri);
+
+        String name = uri.getLastPathSegment();
+        String number = contentValues.getAsString(SSMSContract.COLUMN_PHONE_NUMBER);
+        String key = contentValues.getAsString(SSMSContract.COLUMN_ENCRYPT_KEY);
+
+        switch (match)
+        {
+            case ENTIRE_ENTRY:
+                SSMSDbHelper.updateAllPossible(db, name, number, key);
+                notifyAll();
+                return 1;
+            case KEY:
+                SSMSDbHelper.setEncryptKeyAtName(db, name, key);
+                notifyAll();
+                return 1;
+            case PHONE:
+                SSMSDbHelper.setPhoneNumberAtName(db, name, number);
+                notifyAll();
+                return 1;
+            default:
+                throw new UnsupportedOperationException("We do not support updating the database in such a way");
+        }
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues)
     {
-        SQLiteDatabase db = openHelper.getReadableDatabase();
+        SQLiteDatabase db = openHelper.getWritableDatabase();
         int match = matcher.match(uri);
 
-        String name = contentValues.getAsString(SSMSContract.COLUMN_USER_NAME);
+        String name = uri.getLastPathSegment();
         String number = contentValues.getAsString(SSMSContract.COLUMN_PHONE_NUMBER);
         String key = contentValues.getAsString(SSMSContract.COLUMN_ENCRYPT_KEY);
         switch (match)
@@ -104,14 +129,46 @@ public class SSMSContentProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs)
     {
-        SQLiteDatabase db = openHelper.getReadableDatabase();
+        SQLiteDatabase db = openHelper.getWritableDatabase();
         int match = matcher.match(uri);
+        String name = uri.getLastPathSegment();
         switch(match)
         {
             case ENTIRE_ENTRY:
-                //TODO: Finish ths thing
+                SSMSDbHelper.deleteRecord(db, name);
+                notifyAll();
+                return 1;
+            case PHONE:
+                SSMSDbHelper.setPhoneNumberAtName(db, name, "");
+                notifyAll();
+                return 0;
+            case KEY:
+                //In the case of a key, if a name entry exists, we need a key. Otherwise errors can happen. So fall through to delete
             default:
                 throw new UnsupportedOperationException("We do not support deleting records in such a manner");
         }
+    }
+
+
+    //This function probably doesn't do what it's supposed to, but the documentation didn't help a ton when you aren't initially familiar with SQL
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
+    {
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        int match = matcher.match(uri);
+        Cursor cursor;
+        switch (match)
+        {
+            case ENTIRE_ENTRY:
+            case KEY:
+            case PHONE:
+                cursor = db.query(SSMSContract.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            default:
+                throw new UnsupportedOperationException("Bad query");
+        }
+
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return cursor;
     }
 }
