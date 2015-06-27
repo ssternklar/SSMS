@@ -25,7 +25,7 @@ public final class SSMSDbHelper {
         ContentValues values = new ContentValues();
         values.put(SSMSContract.COLUMN_USER_NAME, name);
         values.put(SSMSContract.COLUMN_PHONE_NUMBER, number);
-        values.put(SSMSContract.COLUMN_ENCRYPT_KEY, number);
+        values.put(SSMSContract.COLUMN_ENCRYPT_KEY, key);
         return db.insert(SSMSContract.TABLE_NAME, null, values);
     }
 

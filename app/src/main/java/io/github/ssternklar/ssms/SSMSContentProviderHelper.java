@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import java.net.URI;
 
@@ -28,7 +29,8 @@ public final class SSMSContentProviderHelper {
     {
         ContentValues values = new ContentValues();
         values.put(SSMSContract.COLUMN_PHONE_NUMBER, number);
-        values.put(SSMSContract.COLUMN_ENCRYPT_KEY, number);
+        values.put(SSMSContract.COLUMN_ENCRYPT_KEY, key);
+
         return context.getContentResolver().insert(SSMSContract.BASE_URI.buildUpon().appendPath(name).build(), values);
     }
 

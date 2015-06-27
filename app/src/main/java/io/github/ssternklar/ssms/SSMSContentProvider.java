@@ -23,7 +23,6 @@ public class SSMSContentProvider extends ContentProvider {
         //Set stuff up
         UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         String authority = SSMSContract.CONTENT_AUTHORITY;
-
         //Add our URI paths
         matcher.addURI(authority, "/*", ENTIRE_ENTRY);
         matcher.addURI(authority, "/" + SSMSContract.COLUMN_ENCRYPT_KEY + "/*", KEY);
@@ -84,15 +83,12 @@ public class SSMSContentProvider extends ContentProvider {
         {
             case ENTIRE_ENTRY:
                 SSMSDbHelper.updateAllPossible(db, name, number, key);
-                notifyAll();
                 return 1;
             case KEY:
                 SSMSDbHelper.setEncryptKeyAtName(db, name, key);
-                notifyAll();
                 return 1;
             case PHONE:
                 SSMSDbHelper.setPhoneNumberAtName(db, name, number);
-                notifyAll();
                 return 1;
             default:
                 throw new UnsupportedOperationException("We do not support updating the database in such a way");
@@ -119,7 +115,6 @@ public class SSMSContentProvider extends ContentProvider {
                 {
                     SSMSDbHelper.insertNewPerson(db, name, number, key);
                 }
-                notifyAll();
                 return getEntryUri(name);
             default:
                 throw new UnsupportedOperationException("We do not support adding people without a full entry");
@@ -136,11 +131,10 @@ public class SSMSContentProvider extends ContentProvider {
         {
             case ENTIRE_ENTRY:
                 SSMSDbHelper.deleteRecord(db, name);
-                notifyAll();
                 return 1;
             case PHONE:
                 SSMSDbHelper.setPhoneNumberAtName(db, name, "");
-                notifyAll();
+
                 return 0;
             case KEY:
                 //In the case of a key, if a name entry exists, we need a key. Otherwise errors can happen. So fall through to delete

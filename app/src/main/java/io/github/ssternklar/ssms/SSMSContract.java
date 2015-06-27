@@ -7,7 +7,7 @@ import android.net.Uri;
 public final class SSMSContract
 {
 
-    public final static String CONTENT_AUTHORITY = "io.github.ssternklar.ssms";
+    public final static String CONTENT_AUTHORITY = "io.github.ssternklar.ssms.provider";
     public final static Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY + "/");
 
     public final static String CONTENT_TYPE_DIR =
