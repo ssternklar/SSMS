@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class SSMSDbOpenHelper extends SQLiteOpenHelper {
-    private final static int DB_VERSION = 1;
+    private final static int DB_VERSION = 2;
 
     public SSMSDbOpenHelper(Context context)
     {
@@ -20,7 +20,7 @@ public class SSMSDbOpenHelper extends SQLiteOpenHelper {
                 SSMSContract.COLUMN_USER_NAME + " NVARCHAR(4000) UNIQUE NOT NULL, " +
                 //This one can be null, after all we don't want a default phone number, right?
                 SSMSContract.COLUMN_PHONE_NUMBER + " NVARCHAR(15) NOT NULL, " +
-                SSMSContract.COLUMN_ENCRYPT_KEY + " NVARCHAR(800) NOT NULL " +
+                SSMSContract.COLUMN_ENCRYPT_KEY + " NVARCHAR(210) NOT NULL " +
                 " );";
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE);
     }
