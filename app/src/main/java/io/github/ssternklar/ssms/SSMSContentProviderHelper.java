@@ -16,10 +16,8 @@ public final class SSMSContentProviderHelper {
         Cursor c = context.getContentResolver().query(SSMSContract.BASE_URI.buildUpon().appendPath(SSMSContract.COLUMN_PHONE_NUMBER + "/" + name).build(), new String[]{SSMSContract.COLUMN_PHONE_NUMBER}, SSMSContract.COLUMN_USER_NAME + "=\"" + name + "\"", null, null);
         if(!c.moveToFirst())
         {
-            c.close();
             return "";
         }
-        c.close();
         return c.getString(0);
     }
 
@@ -28,10 +26,8 @@ public final class SSMSContentProviderHelper {
         Cursor c = context.getContentResolver().query(SSMSContract.BASE_URI.buildUpon().appendPath(SSMSContract.COLUMN_ENCRYPT_KEY + "/" + name).build(), new String[]{SSMSContract.COLUMN_ENCRYPT_KEY}, SSMSContract.COLUMN_USER_NAME + "=\"" + name + "\"", null, null);
         if(!c.moveToFirst())
         {
-            c.close();
             return "";
         }
-        c.close();
         return c.getString(0);
     }
 

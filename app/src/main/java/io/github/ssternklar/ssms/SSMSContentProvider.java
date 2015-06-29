@@ -93,7 +93,6 @@ public class SSMSContentProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("We do not support updating the database in such a way");
         }
-        db.close();
         return 1;
     }
 
@@ -121,8 +120,6 @@ public class SSMSContentProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("We do not support adding people without a full entry");
         }
-
-        db.close();
         return getEntryUri(name);
     }
 
@@ -168,7 +165,6 @@ public class SSMSContentProvider extends ContentProvider {
         }
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
-        db.close();
         return cursor;
     }
 }

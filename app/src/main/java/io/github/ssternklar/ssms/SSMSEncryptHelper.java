@@ -2,7 +2,7 @@ package io.github.ssternklar.ssms;
 
 public final class SSMSEncryptHelper {
 
-    public String Encrypt(String toEncrypt, String key)
+    public static String Encrypt(String toEncrypt, String key)
     {
         char[] chars = toEncrypt.toCharArray();
         char[] newChars = new char[chars.length];
@@ -19,7 +19,7 @@ public final class SSMSEncryptHelper {
         }
         return new String(newChars);
     }
-    public String Decrypt(String toDecrypt, String key)
+    public static String Decrypt(String toDecrypt, String key)
     {
         char[] chars = toDecrypt.toCharArray();
         char[] newChars = new char[chars.length];
