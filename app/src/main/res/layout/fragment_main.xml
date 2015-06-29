@@ -48,4 +48,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:text="@string/delete_profile_button_text"
+        android:id="@+id/delete_profile_button"
+        android:layout_below="@+id/recieve_key_button"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

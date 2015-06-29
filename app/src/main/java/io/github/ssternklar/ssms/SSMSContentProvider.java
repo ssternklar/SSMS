@@ -83,16 +83,18 @@ public class SSMSContentProvider extends ContentProvider {
         {
             case ENTIRE_ENTRY:
                 SSMSDbHelper.updateAllPossible(db, name, number, key);
-                return 1;
+                break;
             case KEY:
                 SSMSDbHelper.setEncryptKeyAtName(db, name, key);
-                return 1;
+                break;
             case PHONE:
                 SSMSDbHelper.setPhoneNumberAtName(db, name, number);
-                return 1;
+                break;
             default:
                 throw new UnsupportedOperationException("We do not support updating the database in such a way");
         }
+        db.close();
+        return 1;
     }
 
     @Override
@@ -115,10 +117,13 @@ public class SSMSContentProvider extends ContentProvider {
                 {
                     SSMSDbHelper.insertNewPerson(db, name, number, key);
                 }
-                return getEntryUri(name);
+                break;
             default:
                 throw new UnsupportedOperationException("We do not support adding people without a full entry");
         }
+
+        db.close();
+        return getEntryUri(name);
     }
 
     @Override
@@ -131,16 +136,16 @@ public class SSMSContentProvider extends ContentProvider {
         {
             case ENTIRE_ENTRY:
                 SSMSDbHelper.deleteRecord(db, name);
-                return 1;
+                break;
             case PHONE:
                 SSMSDbHelper.setPhoneNumberAtName(db, name, "");
-
-                return 0;
+                break;
             case KEY:
                 //In the case of a key, if a name entry exists, we need a key. Otherwise errors can happen. So fall through to delete
             default:
                 throw new UnsupportedOperationException("We do not support deleting records in such a manner");
         }
+        return 1;
     }
 
 
@@ -163,6 +168,7 @@ public class SSMSContentProvider extends ContentProvider {
         }
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        db.close();
         return cursor;
     }
 }

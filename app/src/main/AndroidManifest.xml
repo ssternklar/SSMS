@@ -9,11 +9,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <provider
-            android:authorities="io.github.ssternklar.ssms.provider"
-            android:name="io.github.ssternklar.ssms.SSMSContentProvider"
-            />
+            android:name=".SSMSContentProvider"
+            android:authorities="io.github.ssternklar.ssms.provider" />
 
         <activity
             android:name=".MainActivity"
@@ -27,8 +25,17 @@
         <activity
             android:name=".CreateProfileActivity"
             android:label="@string/title_activity_create_profile"
-            android:parentActivityName="io.github.ssternklar.ssms.MainActivity" >
+            android:parentActivityName=".MainActivity" >
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.ssternklar.ssms.MainActivity" />
+        </activity>
+        <activity
+            android:name=".DeleteProfileActivity"
+            android:label="@string/title_activity_delete_profile"
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.github.ssternklar.ssms.MainActivity" />

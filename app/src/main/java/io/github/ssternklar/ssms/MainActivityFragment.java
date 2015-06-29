@@ -46,6 +46,16 @@ public class MainActivityFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        button = (Button)view.findViewById(R.id.delete_profile_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DeleteProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 

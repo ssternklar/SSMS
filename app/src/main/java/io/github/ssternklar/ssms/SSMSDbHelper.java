@@ -1,6 +1,7 @@
 package io.github.ssternklar.ssms;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -48,5 +49,13 @@ public final class SSMSDbHelper {
     public static void deleteRecord(SQLiteDatabase db, String name)
     {
         db.execSQL("DELETE FROM " + SSMSContract.TABLE_NAME + " WHERE " + SSMSContract.COLUMN_USER_NAME + "=\"" + name + "\"");
+    }
+
+    public static void dropDatabase(Context context)
+    {
+        SSMSDbOpenHelper helper = new SSMSDbOpenHelper(context);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + SSMSContract.TABLE_NAME);
+        helper.onCreate(db);
     }
 }
