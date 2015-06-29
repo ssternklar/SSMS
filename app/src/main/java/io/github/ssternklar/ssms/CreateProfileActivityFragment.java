@@ -1,5 +1,7 @@
 package io.github.ssternklar.ssms;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -26,7 +29,7 @@ public class CreateProfileActivityFragment extends Fragment {
 
     String text = "Hello!";
     TextView textView;
-    NameBoxFragment nameBoxFragment;
+    EditText nameBox;
 
     public CreateProfileActivityFragment() {
     }
@@ -37,7 +40,7 @@ public class CreateProfileActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_create_profile, container, false);
 
         //Get our nameBoxFragment
-        nameBoxFragment = (NameBoxFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.name_box_fragment);
+        nameBox = (EditText)view.findViewById(R.id.name_box);
         //Get our button
         Button button = (Button)view.findViewById(R.id.generate_key_button);
 
@@ -45,8 +48,33 @@ public class CreateProfileActivityFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FetchRandomNumberTask task = new FetchRandomNumberTask();
-                task.execute("Bob Smith", "https://www.random.org/sequences/?min=32&max=239&col=1&format=plain&rnd=new");
+                text = nameBox.getText().toString();
+                final SetUpProfileTask task = new SetUpProfileTask();
+
+                //Do a first pass check to make sure nothing will go wrong
+                boolean continueForSure = true;
+                if(!SSMSContentProviderHelper.getEncryptKey(getActivity(), text).equals("") || !SSMSContentProviderHelper.getPhoneNumber(getActivity(), text).equals(""))
+                {
+                    //Why can't I just make a new AlertDialog? Why do I have to go through the Builder class?
+                    AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                            .setTitle("Confirm Overwrite")
+                            .setMessage("There is already a profile with this name, do you wish to overwrite it? You will have to re-transmit the new key once created")
+                            .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    task.execute(text, "https://www.random.org/sequences/?min=32&max=239&col=1&format=plain&rnd=new");
+                                }
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+                }
+                else
+                {
+                    task.execute(text, "https://www.random.org/sequences/?min=32&max=239&col=1&format=plain&rnd=new");
+                }
             }
         });
 
@@ -55,41 +83,41 @@ public class CreateProfileActivityFragment extends Fragment {
         return view;
     }
 
-    public void processRandomTaskFinish(int[] str)
+    public void processRandomTaskFinish(String str)
     {
-        textView.setText(Arrays.toString(str));
+        textView.setText("Your Key: " + str);
     }
 
-    class FetchRandomNumberTask extends AsyncTask<String,Void, int[]>
+    class SetUpProfileTask extends AsyncTask<String,Void, String>
     {
+        String name;
+
         @Override
-        protected int[] doInBackground(String... params) {
-            // These two need to be declared outside the try/catch
-            // so that they can be closed in the finally block.
+        protected String doInBackground(String... params) {
+
+            name = params[0];
+
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
-            // Will contain the raw JSON response as a string.
             String randomNumberString = null;
 
             try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
-                // http://openweathermap.org/API#forecast
                 URL url = new URL(params[1]);
 
-                // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
 
-                // Read the input stream into a String
                 InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
+
                 if (inputStream == null) {
                     // Nothing to do.
                     return null;
                 }
+
+                StringBuffer buffer = new StringBuffer();
+
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line;
@@ -120,16 +148,26 @@ public class CreateProfileActivityFragment extends Fragment {
                 }
             }
 
-            String[] str = randomNumberString.split("[ \n\r]");
-            int[] intArr = new int[str.length];
-            for(int i = 0; i < str.length; i++)
-                intArr[i] = Integer.parseInt(str[i]);
-
-            return intArr;
+            if(randomNumberString != null) {
+                String[] str = randomNumberString.split("[ \n\r]");
+                char[] charArr = new char[str.length];
+                for (int i = 0; i < str.length; i++) {
+                    charArr[i] = (char) Integer.parseInt(str[i]);
+                    if (charArr[i] == '"' || charArr[i] == ';')
+                        charArr[i] = '?';
+                }
+                String key = new String(charArr);
+                SSMSContentProviderHelper.insertNewPerson(getActivity(), name, "", key);
+                return new String(charArr);
+            }
+            else
+            {
+                return "";
+            }
         }
 
         @Override
-        public void onPostExecute(int[] result)
+        public void onPostExecute(String result)
         {
             processRandomTaskFinish(result);
         }

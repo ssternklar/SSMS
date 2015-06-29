@@ -7,22 +7,12 @@
     android:orientation="vertical"
     tools:context="io.github.ssternklar.ssms.CreateProfileActivityFragment">
 
-    <fragment
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:name="io.github.ssternklar.ssms.NameBoxFragment"
-        android:id="@+id/name_box_fragment"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        tools:layout="@layout/fragment_name_box" />
-
     <Button
         android:layout_width="fill_parent"
         android:layout_height="80dp"
         android:text="@string/generate_key_button_text"
         android:id="@+id/generate_key_button"
-        android:layout_below="@+id/name_box_fragment"
+        android:layout_below="@+id/name_box"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -32,6 +22,15 @@
         android:text="Key Goes Here"
         android:id="@+id/TEXT"
         android:layout_below="@+id/generate_key_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/name_box"
+        android:text="@string/name_box_default_text"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
