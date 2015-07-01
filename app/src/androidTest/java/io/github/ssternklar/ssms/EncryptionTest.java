@@ -9,12 +9,12 @@ public class EncryptionTest extends AndroidTestCase {
 
     public void test() throws Throwable
     {
-        String raw = "Hello, and welcome to SSMS!";
-        String key = "1234567890-=qwertyuiop[]asdfghjkl?'zxcvbnm,./!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:?ZXCVBNM<>?";
+        String raw = "Hello, \"\" and welcome to SSMS!";
+        String key = "1234567890-=!@#$%^&*()_+`~QWERTYUIOP{}|qwertyuiop[]\\ASDFGHJKL:?asdfghjkl;'ZXCVBNM<>?zxcvbnm,./";
         String encrypted = SSMSEncryptHelper.Encrypt(raw, key);
         assertFalse("Encryption is failing!", raw.equals(encrypted));
         String decrypted = SSMSEncryptHelper.Decrypt(encrypted, key);
-        assertTrue("Decryption and Encryption don't match!", decrypted.equals(encrypted));
+        assertTrue("Decryption fails!", decrypted.equals(raw));
     }
 
 }

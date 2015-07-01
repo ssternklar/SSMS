@@ -153,7 +153,7 @@ public class CreateProfileActivityFragment extends Fragment {
                 char[] charArr = new char[str.length];
                 for (int i = 0; i < str.length; i++) {
                     charArr[i] = (char) Integer.parseInt(str[i]);
-                    if (charArr[i] == '"' || charArr[i] == ';')
+                    if (charArr[i] == '"')
                         charArr[i] = '?';
                 }
                 String key = new String(charArr);

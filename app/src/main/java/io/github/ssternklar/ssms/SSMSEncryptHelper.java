@@ -32,8 +32,12 @@ public final class SSMSEncryptHelper {
                 {
                     if(key.charAt(j) == chars[i])
                     {
-                        c = key.charAt(j);
+                        c = (char)(j + 32);
                         break;
+                    }
+                    if(chars[i] == '?')
+                    {
+                        c = '?';
                     }
                 }
 

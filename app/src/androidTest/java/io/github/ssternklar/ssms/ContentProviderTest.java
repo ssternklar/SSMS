@@ -15,7 +15,6 @@ public class ContentProviderTest extends AndroidTestCase {
 
     public void test() throws Throwable
     {
-        //TODO: UNIT TEST THE CONTENT PROVIDER
         Context context = getContext();
         SSMSContentProviderHelper.insertNewPerson(context, "John", "1234567890", "151515");
         assertTrue("Something went wrong fetching the phone number from content provider!", SSMSContentProviderHelper.getPhoneNumber(context, "John").equals("1234567890"));
