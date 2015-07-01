@@ -16,5 +16,4 @@ public class EncryptionTest extends AndroidTestCase {
         String decrypted = SSMSEncryptHelper.Decrypt(encrypted, key);
         assertTrue("Decryption fails!", decrypted.equals(raw));
     }
-
 }

@@ -39,6 +39,7 @@ public class DeleteProfileActivityFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String name = nameBox.getText().toString();
                         SSMSContentProviderHelper.deleteRecord(getActivity(), name);
+                        nameBox.setText("");
                     }
                 }).setNegativeButton("Cancel", null).show();
             }
@@ -55,6 +56,7 @@ public class DeleteProfileActivityFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 SSMSDbHelper.dropDatabase(getActivity());
+                                nameBox.setText("");
                             }
                         }).setNegativeButton("Cancel", null).show();
             }

@@ -56,6 +56,15 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
+        button = (Button)view.findViewById(R.id.send_message_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, SendMessageActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 

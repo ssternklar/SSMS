@@ -35,9 +35,9 @@ public final class SSMSEncryptHelper {
                         c = (char)(j + 32);
                         break;
                     }
-                    if(chars[i] == '?')
+                    if(chars[i] == '"')
                     {
-                        c = '?';
+                        c = '"';
                     }
                 }
 
