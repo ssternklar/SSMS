@@ -35,13 +35,13 @@ public final class SSMSEncryptHelper {
                         c = (char)(j + 32);
                         break;
                     }
-                    if(chars[i] == '"')
-                    {
-                        c = '"';
-                    }
                 }
 
                 newChars[i] = c;
+            }
+            else if(chars[i] == 240)
+            {
+                newChars[i] = '"';
             }
             else
             {

@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -32,6 +34,32 @@ public class SendMessageActivityFragment extends Fragment {
     public SendMessageActivityFragment() {
     }
 
+    private void refetchTexts()
+    {
+        String number = phoneBox.getText().toString();
+        if(number.length() > 0 && isJustNumber(number)) {
+            String key = SSMSContentProviderHelper.getEncryptKey(getActivity(), nameBox.getText().toString());
+            Cursor c = getActivity().getContentResolver().query(Uri.parse("content://sms"), new String[]{"body"}, "address=?", new String[]{number}, null);
+            c.moveToFirst();
+            previousBox.setText(SSMSEncryptHelper.Decrypt(c.getString(c.getColumnIndex("body")), key));
+            c.moveToNext();
+            if (!c.isAfterLast()) {
+                secondPreviousBox.setText(SSMSEncryptHelper.Decrypt(c.getString(c.getColumnIndex("body")), key));
+            }
+            c.close();
+        }
+    }
+
+    private boolean isJustNumber(String number)
+    {
+        for(int i = 0; i < number.length(); i++)
+        {
+            if(!Character.isDigit(number.charAt(i)))
+                return false;
+        }
+        return true;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +70,16 @@ public class SendMessageActivityFragment extends Fragment {
         messageBox = (EditText)view.findViewById(R.id.write_message);
         previousBox = (TextView)view.findViewById(R.id.previous_text_message);
         secondPreviousBox = (TextView)view.findViewById(R.id.second_previous_text_message);
+
+        phoneBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(!hasFocus)
+                    refetchTexts();
+
+            }
+        });
 
         Button button = (Button)view.findViewById(R.id.send_message_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +119,7 @@ public class SendMessageActivityFragment extends Fragment {
                 {
                     case Activity.RESULT_OK:
                         Toast.makeText(getActivity(), "Message Sent", Toast.LENGTH_SHORT).show();
+                        refetchTexts();
                         break;
                     default:
                         Toast.makeText(getActivity(), "Message Failed to send, re-send from your normal SMS app", Toast.LENGTH_SHORT).show();
@@ -95,6 +134,7 @@ public class SendMessageActivityFragment extends Fragment {
                 {
                     case Activity.RESULT_OK:
                         Toast.makeText(getActivity(), "Message Delivered", Toast.LENGTH_SHORT).show();
+                        refetchTexts();
                         break;
                     default:
                         Toast.makeText(getActivity(), "Message Failed to deliver, re-send from your normal SMS app", Toast.LENGTH_SHORT).show();
