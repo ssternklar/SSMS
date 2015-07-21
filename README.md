@@ -2,7 +2,7 @@
 A simple android app for "encrypting" text messages that I am building for fun.
 
 # Current Status
-In active development
+On Hold
 
 # Motivation
 
